@@ -39,11 +39,8 @@ func diningProblem(philosopher string, forkLeft, forkRight *sync.Mutex) {
 		fmt.Printf("\t%s picked up the fork to their left\n", philosopher)
 		forkRight.Lock()
 		fmt.Printf("\t%s picked up the fork to their right\n", philosopher)
-
 		fmt.Println(philosopher, " has both forks and is eating...\n")
-
 		time.Sleep(sleepTime)
-
 		// unlock the mutexes
 		forkLeft.Unlock()
 		fmt.Printf("\t%s put down  the fork to their left\n", philosopher)
@@ -57,9 +54,10 @@ func diningProblem(philosopher string, forkLeft, forkRight *sync.Mutex) {
 }
 func main() {
 	// print intro
-	fmt.Println("The Dining philosohper's problem")
+	fmt.Println("The Dining philosopher's problem")
 	fmt.Println("---------------------------------")
 	wg.Add(len(philosophers))
+	// I seriously do not understand this part 
 	forkLeft := &sync.Mutex{}
 	// spawn one go routine for each philosophers
 	for i := 0; i < len(philosophers); i++ {
