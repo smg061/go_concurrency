@@ -10,7 +10,7 @@ import (
 )
 
 type Job interface {
-	Id() string;
+	Id() string
 	Process()
 }
 type Worker struct {
@@ -48,12 +48,12 @@ func NewJobQueue(maxWorkers int) *JobQueue {
 	}
 
 	return &JobQueue{
-		internalQueue: make(chan Job),
-		readyPool: readyPool,
-		workers: workers,
-		dispatcherStopped: &sync.WaitGroup{},
-		workersStopped: &workersStopped,
-		quit: make(chan bool),
+		internalQueue: 		make(chan Job),
+		readyPool: 			readyPool,
+		workers: 			workers,
+		dispatcherStopped:  &sync.WaitGroup{},
+		workersStopped: 	&workersStopped,
+		quit: 				make(chan bool),
 	}
 }
 
@@ -71,6 +71,7 @@ func (q *JobQueue) Stop() {
 	q.dispatcherStopped.Wait()
 	close(q.internalQueue)
 	close(q.readyPool)
+	close(q.quit)
 }
 
 func (q *JobQueue) Dispatch() {
@@ -124,7 +125,7 @@ func (t *TestJob) Process() {
 	fmt.Printf("Processing job %s \n", t.ID)
 	duration := time.Duration(rand.Intn(8))
 	time.Sleep(duration * time.Second)
-	fmt.Printf("Job %s completed \n", t.ID)
+	fmt.Printf("Job %s completed in %d seconds \n", t.ID, duration)
 }
 
 func (t *TestJob) Id () string {
@@ -133,12 +134,8 @@ func (t *TestJob) Id () string {
 func main () {
 
 	queue:= NewJobQueue(runtime.NumCPU())
-
 	queue.Start()
-	fmt.Printf("%d\n",runtime.NumCPU())
-
 	defer queue.Stop()
-
 	for i := 0; i < 4*runtime.NumCPU(); i++ {
 		queue.Submit(&TestJob{strconv.Itoa(i)})
 	}
