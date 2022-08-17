@@ -64,7 +64,7 @@ func (p *PriorityQueue[T]) bubbleDown() {
 		rightChildIdx := (2 * parentIdx) + 2;
 		leftChildPriority := -1;
 		rightChildPriority := -1;
-		idxToSwap := -1;
+		idxToSwap := 0;
 		if (leftChildIdx < length) {
 			leftChildPriority = p.data[leftChildIdx].Priority;
 			if (leftChildPriority < elementPriority) {
@@ -79,7 +79,7 @@ func (p *PriorityQueue[T]) bubbleDown() {
 			}
 
 		}
-		if idxToSwap == -1 {
+		if idxToSwap == 0 {
 			break
 		}
 		// swap with planned element
